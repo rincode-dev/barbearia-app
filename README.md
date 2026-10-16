@@ -67,7 +67,7 @@ O mesmo código atende **qualquer barbearia**. Nome, logo, contatos, horários e
 ```mermaid
 stateDiagram-v2
     [*] --> Agendado: site ou painel
-    Agendado --> EmAtendimento: horário chegou (automático)<br/>ou "Começar agora"
+    Agendado --> EmAtendimento: horário chegou ou "Começar agora"
     Agendado --> Cancelado: Cancelar (com motivo)
     Agendado --> Agendado: Reagendar
     EmAtendimento --> Concluido: Concluir (OS recebe o número)
