@@ -15,6 +15,11 @@ Sistema completo para barbearias com duas partes no mesmo app:
 
 O mesmo código atende **qualquer barbearia**. Nome, logo, contatos, horários e serviços vêm do banco, nunca do código. Cada barbearia roda com o **próprio banco PostgreSQL**, isolado das demais.
 
+<p align="center">
+  <img src="docs/imagens/demonstracao.gif" alt="Demonstração: cliente agenda Corte + Barba pelo celular, o horário aparece na agenda do barbeiro, e uma OS em andamento recebe pagamento dividido em Pix e dinheiro e é concluída com número" width="360"><br>
+  <em>Cliente agenda pelo site → o horário aparece na agenda do barbeiro → OS com pagamento dividido (Pix + dinheiro) é concluída e recebe o número. Dados fictícios.</em>
+</p>
+
 > **Destaques técnicos:** motor de disponibilidade em funções puras e testadas; **trava de sobreposição de horário no próprio banco** (*exclusion constraint* + *advisory locks*), que resolve a corrida entre dois clientes pelo mesmo horário; **RLS do PostgreSQL** como autoridade de permissão; login próprio com bcrypt e sessões com hash; agenda **em tempo real** via `LISTEN/NOTIFY` + SSE; e **contingência com segunda VPS**, em que o app detecta réplica e primário sozinho.
 
 ---
