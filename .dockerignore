@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.git
+.env
+.env.local
+.env.*.local
+tsconfig.tsbuildinfo
+npm-debug.log*
+
+# Fotos e arquivos dos clientes (banco próprio, decisão 47) e testes — nunca no build
+dados
+scripts/testes

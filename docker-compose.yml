@@ -1,0 +1,45 @@
+# Banco local (docs/ARQUITETURA.md, decisão 47): o mesmo PostgreSQL que vai para a VPS.
+# Uso: docker compose --env-file .env.local up -d db
+# Porta só em 127.0.0.1 (nunca exposta na rede). Os dados ficam no volume barbearia-pg.
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: barbearia-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${PG_SUPERUSER_PASSWORD:?defina PG_SUPERUSER_PASSWORD no .env.local}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - barbearia-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # App ligado ao banco acima, em 127.0.0.1:3002 (é essa porta que o túnel usa).
+  # Uso: docker compose --env-file .env.local up -d --build app
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: barbearia-app-dev
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL_DOCKER:?defina DATABASE_URL_DOCKER no .env.local}
+      ARQUIVOS_DIR: /dados/arquivos
+      # Contingência: só com o firewall aceitando apenas o Cloudflare (ver limite.ts).
+      IP_PELO_CLOUDFLARE: ${IP_PELO_CLOUDFLARE:-0}
+    # Logo e fotos (M3): a mesma pasta dados/arquivos do projeto. Na VPS, a pasta precisa
+    # pertencer ao usuário do container (uid 1001).
+    volumes:
+      - ./dados/arquivos:/dados/arquivos
+    ports:
+      - "127.0.0.1:3002:3000"
+
+volumes:
+  barbearia-pg:
