@@ -258,7 +258,7 @@ Seis modelos fixos (confirmar agendamento, lembrete, agendamento confirmado, ate
 
 O projeto foi construído **em fases**, e cada fase só foi marcada como concluída depois de testada rodando no Docker.
 
-- **Testes unitários** (Node com `--experimental-strip-types`): motor de disponibilidade, grade da agenda, status de funcionamento, métricas do cliente, rolagem contínua e leitura de IP.
+- **Testes unitários** (Node com `--experimental-strip-types`): motor de disponibilidade, grade da agenda, status de funcionamento, métricas do cliente, rolagem contínua, leitura de IP e leitura de valores em reais ("R$ 1.234,56").
 - **Testes de integração e ponta a ponta** (`scripts/testes/*.mjs`), contra o app e o banco reais: permissões por papel (admin, barbeiro, visitante), corrida de horário, fluxo site → agenda → OS → pagamento dividido → financeiro, login e sessões, upload, eventos ao vivo, fluxo automático e endpoint de saúde. A última bateria completa registrada somou **mais de 460 verificações**. Cada teste cria usuários e dados temporários e **apaga tudo no final**.
 - `eslint` e `tsc --noEmit` limpos.
 

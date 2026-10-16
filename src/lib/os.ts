@@ -52,8 +52,8 @@ export const FORMAS_PAGAMENTO: { valor: FormaPagamento; rotulo: string }[] = [
 
 // "40", "40,50", "R$ 1.234,56" → 40 / 40.5 / 1234.56. null se não for número.
 export function lerValorBR(bruto: string): number | null {
-  const limpo = bruto.replace(/[R$%s]/g, "");
-  const normalizado = limpo.includes(",") ? limpo.replace(/./g, "").replace(",", ".") : limpo;
+  const limpo = bruto.replace(/[R$%\s]/g, "");
+  const normalizado = limpo.includes(",") ? limpo.replace(/\./g, "").replace(",", ".") : limpo;
   const n = Number(normalizado);
   return normalizado !== "" && Number.isFinite(n) ? Math.round(n * 100) / 100 : null;
 }
